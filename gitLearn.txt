@@ -1,0 +1,117 @@
+﻿===============================================
+sep20th首次推送时:
+//先移除远程主机名
+$ git remote rm origin
+#添加新的远程主机名(config中设定的主机名-#注意git@后一定跟sep20th;)
+$ git remote add origin git@sep20th.github.com:sep20th/xxx.git
+$ git push origin master
+
+//后续添加版本时则直接Push即可
+参考:http://www.jianshu.com/p/04e9a885c5c8
+参考:http://www.cnblogs.com/popfisher/p/5731232.html
+
+==============================================================================
+本地仓库关联远程仓库
+1.github新建远程仓库(不要init readMe.md)
+2.本地文件中 git init
+3.git remote add origin git@github.com:weenta/.....git
+4.git add.
+5.git commit -m "aaa"
+6.git push -u origin master
+=============================================
+1、 mkdir learngit   //CMD命令，创建子目录
+		git status  //显示仓库当前的状态(显示是否被修改，是否提交等)
+
+2、git diff   //显示具体的改动
+
+3、 git add -A   // 添加所有改动
+
+		git add *     // 添加新建文件和修改，但是不包括删除
+
+		git add .    // 添加新建文件和修改，但是不包括删除
+
+		git add -u   // 添加修改和删除，但是不包括新建文件
+
+4、 git commit -m "append GPL"  //添加版本 -m "..."为版本评论（注释）
+==============================================================		
+git add 实际上把要提交的所有修改放到暂存区（stage），执行git commit可以把暂存去的修改提交到分支
+==============================================================
+
+5、git log  //查看版本历史记录（最近到最远的提交日志）
+	 git log --pretty=oneline  //一行显示		
+
+8、git reflog   //显示每一次命令包括commit  reset等	 
+6、cat readme.txt  //显示readme.txt的内容
+
+7、git reset --hard HEAD^  //退回上一个版本
+7、git reset --hard HEAD^^  //退回上两个版本
+7、git reset --hard HEAD~100  //退回上100个版本
+7、git reset --hard dc6e081  //退回到dc6e081版本
+
+
+
+9、 git checkout -- readme.txt  //将readme.txt的更改撤销回最近一次的git commit 或git add 时的状态
+		  (//注意--后面有空格)
+			(// 如果没有--则成为 切换到另一分支的命令)
+
+============================================================
+关联github上的远程仓库
+============================================================
+10、创建远程仓库并推送：
+10.1  ssh-keygen -t rsa -C "weenta@qq.com"	//window命令下先创建SSH Key
+			将/c/Users/Administrator.PC-20170319YSRX/.ssh/id_rsa.pub
+			的内容添加到github账户中的SSH中即可允许推送
+
+10.2	git clone git@github.com:weenta/gitskills.git //将远程仓库克隆到本地
+
+10.3	cd vue-test 
+			git config user.name "may5th"
+			git config user.email "mayy5th@sina.com"
+			修改用户信息
+
+10.4	git add .
+			git commit -m "..."
+
+10.5	git push origin master
+=============================================
+
+
+10.  git remote add origin git@github.com:weenta/learngit.git
+			//关联远程仓库(origin是git默认的远程仓库叫法)（如果是clone下来的，则不用执行此命令）
+
+10.5	git push -u origin master   
+			//推送到远程仓库，第一次推送master分支时，加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来；在以后的推送或者拉取时就可以简化命令
+10.6  git push origin master 		
+			//从现在起，只要本地作了提交，就可以通过该命令把本地的master分支更改推送到github
+
+=========================================
+
+多人协作
+12.1	git remote -v  //显示远程仓库的信息
+			//origin  git@github.com:weenta/gitskills.git (fetch)
+			//origin  git@github.com:weenta/gitskills.git (push)
+			//如果没有推送权限 看不到push地址
+=================================
+
+
+===========================================
+git 修改当前的project的用户名的命令为：git config user.name 你的目标用户名;
+	git config user.email 你的目标邮箱名;
+
+git 修改全局命令
+    git config  --global user.name 你的目标用户名；
+    git config  --global user.email 你的目标邮箱名;
+======================================================
+
+github多账号
+默认为:weenta
+第二帐号为sep20th;
+
+sep20th首次推送时:
+//先移除远程主机名
+$ git remote rm origin
+
+//添加新的远程主机名(config中设定的主机名 注意:git@sep20th.github.com....)
+$ git remote add origin git@sep20th.github.com:sep20th/xxx.git
+
+$ git push ...
