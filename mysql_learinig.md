@@ -12,8 +12,8 @@
 - 使用数据库 
   `use mydatabases;`
 
-- 查看当前使用的数据库  
-  `select database();`  
+- 查看当前使用的数据库	
+  `select database();`	
 
 - 查看该数据库下的表
   `show tables;`
@@ -23,10 +23,10 @@
 #### 数据表操作
 - 删除数据表
 `drop table table_name;` 
-例如：删除表名为 MyClass 的表  
+例如：删除表名为 MyClass 的表	
 `drop table MyClass;`
 
-- 查看表结构  
+- 查看表结构	
 `desc table_name;`
 
 - 查看表内容

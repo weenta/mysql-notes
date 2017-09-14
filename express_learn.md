@@ -1,6 +1,6 @@
 ### express 连接mysql
 - 安装`mysql`依赖
-- 建立连接池  
+- 建立连接池 	
 
 > 方法一
 
@@ -135,4 +135,14 @@ module.exports = (function () {
 	});
 
 ```
+
+### 设置token
+
+- 登录/注册时生成token,( jsonwebtoken )并返回客户端
+
+- vue拿到token后存储,在axios request使用interceptors拦截并添加保存在本地的token
+
+- server端验证token 不通过则返回错误码
+
+- axios response 收到错误码后 显示登录过期 跳转到重新登录界面
 
