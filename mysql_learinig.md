@@ -1,13 +1,21 @@
-#### 连接到本机上的MYSQL。进入mysql\bin
-	`mysql -u root -p`  
-结尾没有`;`
+#### 连接到本机上的MYSQL。进入mysql\bin		
+-	`mysql -u user_name -p` 结尾没有`;`
+-  `select user();`	 查看当前用户
+- `mysql -u root -P3307 -p` 连接端口号为3307的mysql
+
 
 #### 创建数据库
 - 查看已有database 
 	`show databases;`
 
-- 创建新的数据库:mydatabase
-`create database mydatabase;`
+- 创建新的数据库:
+`create database db_name;`
+
+- 修改数据库:    
+` alter database db_name charset=utf8 //将数据库字符编码改为utf8`
+
+- 删除数据库
+` drop database [if exists] db_name; `
 
 - 使用数据库 
 	`use mydatabases;`
@@ -21,24 +29,176 @@
 
 
 #### 数据表操作
+- 创建表	
+```sql 
+	create table user1(
+		id int not null auto_increment primary key,
+		username VARCHAR(50) NOT NULL unique key,
+		gender enum('1','2','3') default '3' not null
+	)engine=innodb auto_increment=1 default charset=utf8;
+```
+
+-  查看创建表的命令 ` show create table tb_name; `
+
+
 - 删除数据表
 `drop table table_name;` 
-例如：删除表名为 MyClass 的表	
-`drop table MyClass;`
+例如：删除表名为 MyClass 的表`drop table MyClass;`
+
+- 更改数据表名	` rename table users1 to users2 ` 
 
 - 查看表结构	
 `desc table_name;`
 
+- 更新数据表结构
+> 添加单列	` alter table user1 add pwd varchar(20) not null default '123' `
+> 添加多列 	` alter table tb_name add (col_name1 col_defination,col2 col_defignation ) `
+> 删除单/多列 `alter table tb_name drop col_name1, drop col_name2 ;`
+> 更新列	` alter table users1 alter pwd set defalut '456' `
+> **更新列**	` alter table users1 modify pwd varchar(20) not null unsigned default '789' 	//只改变属性`	
+>**更新列** 	` alter table users1 change pwd password varchar(10) not null unsigned default 'abc' 	//同时改变列名字和属性`
+
+
+
 - 查看表内容
 `select * from table_name;`
 
+
+- 插入数据  
+```sql
+	// 单表插入
+	insert table_name values( , , ,);	
+	insert table_name(id,name) values('id','name');
+	
+	//	将一张表的查询结果写入另一张表
+	INSERT test(username) SELECT username FROM users WHERE age>=100;  // 将user表中age>=100的username插入到test表中
+
+	INSERT tdb_goods_cates(cate_name) SELECT goods_cate FROM tdb_goods GROUP BY goods_cate;
+
+```  
+
+- 更新数据(单表更新)
+```sql	 
+	UPDATE users SET age = age+10;		// 所有记录的age+10
+	UPDATE users SET age = age+100 WHERE id % 2 = 0;	//id是偶数的记录age+10 
+```
+
+- 删除数据(单表删除)
+```sql
+	DELETE FROM users;	//删除所有记录
+	DELETE FROM users WHERE id = 3;	//删除id为3的记录
+
+```
+
+- ##### 查询记录
+	- 一般查询
+	> 
+	```sql
+		SELECT id,username FROM users;	//只查询显示users表中的id,username
+		SELECT users.id,users.username FROM users;	//用于连表查询
+		SELECT id AS u_id, username AS u_name FROM users; //查询结果使用别名显示
+
+		// 分组
+		SELECT sex FROM users GROUP BY sex;		// 根据sex进行分组
+
+		// 排序
+		SELECT * FROM users ORDER BY id DESC; 	//根据id降序排列,asc为升序
+		SELECT * FROM users ORDER BY age DESC, id ASC; // 根据age降序,如果age相同,根据id升序排列
+		
+		// 限制数量 limit
+		SELECT * FROM users LIMIT 2; //返回2条记录
+
+	``` 
+	- 子查询
+	> 指出现在其他SQL语句内的`SELECT`语句
+	``` sql
+		// 使用比较运算符的子查询
+		SELECT ROUND(AVG(goods_price),2) FROM tdb_goods;	//对表tdb_goods中的goods_price求平均值,保留2位小数;		
+
+		//子查询>=
+		SELECT goods_id,goods_name,goods_price FROM tdb_goods WHERE goods_price >= (SELECT round(avg(goods_price),2) FROM tdb_goods); 
+
+		//
+	```
+	
+	- 多表更新
+	```sql
+		// 将表tdb_goods中的goods_cate 设置为 表tdb_goods_cates中的cate_id
+		// INNER JOIN 内连接
+		UPDATE tdb_goods INNER JOIN tdb_goods_cates ON goods_cate = cate_name SET goods_cate = cate_id;
+		
+		// 使用别名防brand_name混淆
+		UPDATE tdb_goods AS g INNER JOIN tdb_goods_brands AS b ON g.brand_name = b.brand_name SET g.brand_name = b.brand_id;
+
+		// 数据改变但是数据表结构未变; 使用ALTER ... CHANGE语句改变表结构
+		alter table tdb_goods
+    	change goods_cate cate_id smallint unsigned not null,
+    	change brand_name brand_id smallint unsigned not null;
+		
+		// 创建新表并插入数据
+		create table tdb_goods_brands(    
+			brand_id smallint unsigned primary key auto_increment,
+			brand_name varchar(40) not null 
+		)engine = innodb default charset=utf8  
+		select brand_name from tdb_goods group by brand_name; 	//将查询的结果插入新表中
+
+	```
+
+- 连接的语法结构
+> ` table_a {[INNER|CROSS] JOIN | {LEFT|RIGHT} JOIN} table_reference ON conditional_expr `
+	-	连接类型
+	``` 
+		// 内连接 仅显示符合连接条件的记录(两表的交集)-较为常用
+		INNER JOIN	//  等价于(JOIN;CROSS_JOIN)
+
+		// 左外连接 显示左表全部和右表中符合条件的记录
+		LEFT [OUTER] JOIN 
+
+		// 右外连接 显示右表全部和左表中符合条件的记录
+		RIGHT [OUTER] JOIN 
+
+		// 三表连查
+		// 其中brand_name 在表tdb_goods_brands中
+		// cate_name 在表tbd_goods_cates 中
+		// INNER JOIN 连接处无符号分隔
+		SELECT goods_name, goods_price,brand_name,cate_name FROM tdb_goods AS g
+		INNER JOIN tdb_goods_brands AS b ON g.brand_id = b.brand_id
+		INNER JOIN tdb_goods_cates AS c ON g.cate_id = c.cate_id;
+
+	```
+
+
+
 #### 表类型  
-- innodb 支持事务处理 (增大系统开销)
+- innodb 支持事务处理,外键约束 (增大系统开销)
 - myisam 不支持 (但是速度快)
 > 事务处理 多条mysql语句,一条不成功,其他回滚 
 
-- 插入数据  
- ` insert table_name values( , , ,);`
+
+### 约束	
+- 非空约束 ` NOT NULL`
+- 主键约束 ` PRIMARY KEY `
+- 唯一约束 ` UNIQUE KEY ` 
+- 默认约束 ` DEFAULT `
+- 外键约束 ` FOREIGN KEY ` 	` foreign key (pid) references father_tb(id) `
+
+	- 保持数据一致性,完整性,实现一对一或一对多关系(关系性数据库)
+	-	要求:
+	-	禁止使用临时表;	
+	-	存储引擎只能是InnoDB;	
+	-	外键列和参照列必须具有相似的数据类型,其中数字的长度或是否有符号位必须相同;字符的长度则可以不同;
+	-	外键列和参照列必须创建索引,若外键列不存在索引,mysql将自动创建
+
+- 外键约束的参照操作(物理)
+	-	`foreign key (pid) references provinces(id) ON DELETE CASCADE ` 	
+	>	跟随父表删除或更新; 
+	-	`foreign key (pid) references provinces(id) ON DELETE SET NULL `
+	>	父表删除或更新行;子表相应列设为`NULL`;前提子表相应列没有指定**NOT NULL**
+	- ` ... ON DELETE RESTRICT ` 
+	>	拒绝对父表的删除或更新操作;
+
+
+
 
 
 ======================================================================================
