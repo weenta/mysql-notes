@@ -1,35 +1,4 @@
-create table tdb_goods_types(
-  id smallint unsigned primary key auto_increment,
-  type_name varchar(20) not null,
-  parent_id smallint unsigned not null default 0
-)engine=innodb default charset=utf8;
 
-create table test(
-  id tinyint unsigned primary key auto_increment,
-  username varchar(20)
-)engine=innodb default charset=utf8;
-
-
-
-create table users(
-  id smallint unsigned primary key auto_increment,
-  username varchar(20) not null,
-  password varchar(32) not null,
-  age tinyint unsigned not null default 10,
-  sex boolean
-)engine=innodb default charset=utf8;
-
-
-
-
-create table users1(
-  id smallint unsigned primary key auto_increment,
-  username varchar(10) not null,
-  pid smallint unsigned not null,
-  foreign key (pid) references provinces(id) on delete cascade
-)engine=InnoDB default charset=utf8;
-
-#=========================================================================
 #生活服务分类表
 CREATE TABLE `o2o_category`(
   `id` int(11) unsigned NOT NULL auto_increment,
@@ -220,8 +189,44 @@ CREATE TABLE `o2o_featured`(
   PRIMARY KEY (`id`)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT  CHARSET=utf8;
 
+#===================================================================
+
+create table tdb_goods_types(
+  id smallint unsigned primary key auto_increment,
+  type_name varchar(20) not null,
+  parent_id smallint unsigned not null default 0
+)engine=innodb default charset=utf8;
+
+create table test(
+  id tinyint unsigned primary key auto_increment,
+  username varchar(20)
+)engine=innodb default charset=utf8;
 
 
 
+create table users(
+  id smallint unsigned primary key auto_increment,
+  username varchar(20) not null,
+  password varchar(32) not null,
+  age tinyint unsigned not null default 10,
+  sex boolean
+)engine=innodb default charset=utf8;
 
 
+create table users1(
+  id smallint unsigned primary key auto_increment,
+  username varchar(10) not null,
+  pid smallint unsigned not null,
+  foreign key (pid) references provinces(id) on delete cascade
+)engine=InnoDB default charset=utf8;
+
+
+create table tb_four_men(
+  id smallint(5) unsigned not null,
+  user_name varchar(20) not null
+)engine=InnoDB default charset=utf8;
+
+create table tb_friends(
+  id smallint(5) unsigned not null,
+  user_name varchar(20) not null
+)engine= innodb default charset=utf8;

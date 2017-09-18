@@ -18,7 +18,7 @@
 ` drop database [if exists] db_name; `
 
 - 使用数据库 
-	`use mydatabases;`
+	`use db_name;`
 
 - 查看当前使用的数据库	
 	`select database();`	
@@ -246,13 +246,20 @@
 	- `NOW()` 当前日期 时间
 	- `CURTIME` 当前时间
 	- `CURDATE` 当前日期
-	- ``
+
+- 加密函数
+	-	`MD5()` 
+
+	- `PASSWORD()` 修改本地数据库密码
+	```mysql 
+		set password = password('123456')
+	```
 
 
 
-#### 表类型  
-- innodb 支持事务处理,外键约束 (增大系统开销)
-- myisam 不支持 (但是速度快)
+#### 存储引擎(表类型) 
+- myisam 256TB 支持索引 表锁 数据压缩
+- innodb 64TB 支持事务处理 外键约束 索引 行锁
 > 事务处理 多条mysql语句,一条不成功,其他回滚 
 
 
