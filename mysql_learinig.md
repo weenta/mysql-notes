@@ -86,6 +86,33 @@
 	UPDATE users SET age = age+100 WHERE id % 2 = 0;	//id是偶数的记录age+10 
 ```
 
+- 多表更新
+	```sql
+		// 将表tdb_goods中的goods_cate 设置为 表tdb_goods_cates中的cate_id
+		UPDATE tdb_goods INNER JOIN tdb_goods_cates ON goods_cate = cate_name SET goods_cate = cate_id;
+		
+		// 使用别名防brand_name混淆
+		UPDATE tdb_goods AS g INNER JOIN tdb_goods_brands AS b ON g.brand_name = b.brand_name SET g.brand_name = b.brand_id;
+
+		// 数据改变但是数据表结构未变; 使用ALTER ... CHANGE语句改变表结构
+		alter table tdb_goods
+    	change goods_cate cate_id smallint unsigned not null,
+    	change brand_name brand_id smallint unsigned not null;
+		
+		// 创建新表并插入数据
+		create table tdb_goods_brands(    
+			brand_id smallint unsigned primary key auto_increment,
+			brand_name varchar(40) not null 
+		)engine = innodb default charset=utf8  
+		select brand_name from tdb_goods group by brand_name; 	//将查询的结果插入新表中
+
+		// 查询数据插入另一表
+		INSERT tdb_goods_cates(cate_name) SELECT g.goods_cate FROM tdb_goods AS g GROUP BY g.goods_cate;
+
+	```
+
+
+
 - 删除数据(单表删除)
 ```sql
 	DELETE FROM users;	//删除所有记录
@@ -121,31 +148,9 @@
 		//子查询>=
 		SELECT goods_id,goods_name,goods_price FROM tdb_goods WHERE goods_price >= (SELECT round(avg(goods_price),2) FROM tdb_goods); 
 
-		//
 	```
 	
-	- 多表更新
-	```sql
-		// 将表tdb_goods中的goods_cate 设置为 表tdb_goods_cates中的cate_id
-		// INNER JOIN 内连接
-		UPDATE tdb_goods INNER JOIN tdb_goods_cates ON goods_cate = cate_name SET goods_cate = cate_id;
-		
-		// 使用别名防brand_name混淆
-		UPDATE tdb_goods AS g INNER JOIN tdb_goods_brands AS b ON g.brand_name = b.brand_name SET g.brand_name = b.brand_id;
-
-		// 数据改变但是数据表结构未变; 使用ALTER ... CHANGE语句改变表结构
-		alter table tdb_goods
-    	change goods_cate cate_id smallint unsigned not null,
-    	change brand_name brand_id smallint unsigned not null;
-		
-		// 创建新表并插入数据
-		create table tdb_goods_brands(    
-			brand_id smallint unsigned primary key auto_increment,
-			brand_name varchar(40) not null 
-		)engine = innodb default charset=utf8  
-		select brand_name from tdb_goods group by brand_name; 	//将查询的结果插入新表中
-
-	```
+	
 
 - 连接的语法结构
 > ` table_a {[INNER|CROSS] JOIN | {LEFT|RIGHT} JOIN} table_reference ON conditional_expr `
@@ -268,7 +273,7 @@
 - 主键约束 ` PRIMARY KEY `
 - 唯一约束 ` UNIQUE KEY ` 
 - 默认约束 ` DEFAULT `
-- 外键约束 ` FOREIGN KEY ` 	` foreign key (pid) references father_tb(id) `
+- 外键约束 ` FOREIGN KEY ` 	` foreign key (pid) references father_tb(id) ` 	**高并发避免外键约束**
 
 	- 保持数据一致性,完整性,实现一对一或一对多关系(关系性数据库)
 	-	要求:
