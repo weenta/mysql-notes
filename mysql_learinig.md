@@ -21,10 +21,13 @@
 
 
 #### 数据表操作
-- 删除数据表
+- 删除数据表	
 `drop table table_name;` 
 例如：删除表名为 MyClass 的表	
 `drop table MyClass;`
+
+- 删除表内容	
+` delete from table_name; `
 
 - 查看表结构	
 `desc table_name;`
@@ -38,7 +41,7 @@
 > 事务处理 多条mysql语句,一条不成功,其他回滚 
 
 - 插入数据  
- ` insert table_name values( , , ,);`
+ ` insert table_name values( , , ,); `
 
 
 ======================================================================================
