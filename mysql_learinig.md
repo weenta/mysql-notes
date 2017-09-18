@@ -42,12 +42,12 @@
 
 
 - 删除数据表
-`drop table table_name;` 
-例如：删除表名为 MyClass 的表`drop table MyClass;`
+`drop table tb_name;` 
 
-- 更改数据表名	` rename table users1 to users2 ` 
+- 更改数据表名	
+` rename table users1 to users2 ` 
 
-- 删除表内容	
+- 删除表内容(全部)	
 ` delete from table_name; `
 
 - 查看表结构	
@@ -170,6 +170,84 @@
 
 	```
 
+#### MySQL函数
+-------------------
+- 字符函数
+	-  `CONCAT() CONCAT_WS()` 字符连接
+	```sql
+		// 连接 str_A str_B
+		SELECT CONCAT('str_A','str_B');
+		
+		// 将表tb_62中的first_name 和 last_name 用' '连接,作为full_name 输出;
+		// ' '中可多个空格
+		SELECT CONCAT(first_name,' ',last_name) AS full_name FROM tb_62;
+
+		// 将 A B C D 以 - 连接
+		SELECT CONCAT_WS('-','A','B','C','D');
+	```
+	- `FORMAT()`  数字格式化 返回的是**字符类型**
+	```sql
+		SELECT FORMAT(1234.345,1);	// 小数保留一位
+	```
+	
+	-  `LOWER() UPPER()` 大小写转换
+
+	-	 `LEFT() RIGHT()` 左/右截取
+	```sql 
+		SELECT LEFT('ABCD',2);	// => AB 
+
+		SELECT RIGHT('ABCD',2); // => CD
+	``` 
+	
+	-  `LENGTH()` 返回字符串长度 **空格计算在内**
+
+	- `TRIM()`  删除前后空格
+		`LTRIM()` 删除前导空格
+		`RTRIM()` 删除后导空格
+
+	```sql 
+		//删除前后特殊字符
+		SELECT TRIM(BOTH '?' FROM '??MySQL???'); // =>MySQL
+
+		SELECT TRIM(LEADING '?' FROM '??MySQL???'); // =>MySQL???
+
+		SELECT TRIM(TRAILING '?' FROM '??MySQL???'); // =>??MySQL
+	```
+
+	- `REPLACE()` 字符串替换
+	```sql 
+		SELECT REPLACE('??MySQL???','?','-');	//=>--MySQL---
+
+		SELECT REPLACE('??MySQL???','?','-+');	//=>-+-+MySQL-+-+-+
+	```
+
+	- `SUBSTRING()` 字符串截取, **字符串从1开始计数**
+	```sql 
+
+		SELECT SUBSTRING('MySQL',1,2);  // =>My
+		SELECT SUBSTRING('MySQL',3);  // =>SQL
+
+	```
+
+	- `	[NOT] LIKE() `  
+	```sql 
+		SELECT * FROM tb_62 WHERE first_name LIKE '%c%'
+	```
+
+
+- 数值函数
+	- `CEIL()`  进一取整
+	- `FLOOR()` 舍一取整
+	- `ROUND()` 四舍五入
+	- `DIV()` 整数除法 `select 4 div 2 `
+	- `MOD()` 取模
+
+- 时间日期函数
+	- `NOW()` 当前日期 时间
+	- `CURTIME` 当前时间
+	- `CURDATE` 当前日期
+	- ``
+
 
 
 #### 表类型  
@@ -178,7 +256,7 @@
 > 事务处理 多条mysql语句,一条不成功,其他回滚 
 
 
-### 约束	
+#### 约束	
 - 非空约束 ` NOT NULL`
 - 主键约束 ` PRIMARY KEY `
 - 唯一约束 ` UNIQUE KEY ` 
