@@ -1,4 +1,8 @@
-﻿===============================================
+﻿将本地分支推送到远程分支
+git push origin local_branch:remote_branch
+如果remote_branch没有则新建
+				
+===============================================
 sep20th首次推送时:
 //先移除远程主机名
 $ git remote rm origin
