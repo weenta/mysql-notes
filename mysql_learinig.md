@@ -106,6 +106,7 @@
 		)engine = innodb default charset=utf8  
 		select brand_name from tdb_goods group by brand_name; 	//将查询的结果插入新表中
 
+
 		// 查询数据插入另一表
 		INSERT tdb_goods_cates(cate_name) SELECT g.goods_cate FROM tdb_goods AS g GROUP BY g.goods_cate;
 

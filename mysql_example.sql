@@ -230,3 +230,12 @@ create table tb_friends(
   id smallint(5) unsigned not null,
   user_name varchar(20) not null
 )engine= innodb default charset=utf8;
+
+
+# segment2 question
+create table question(
+  q_id int unsigned primary key auto_increment,
+  q_title varchar(200) not null,
+  q_tag_id varchar(20) not null,
+  q_content varchar(200) not null  
+)engine=innodb default charset=utf8;
