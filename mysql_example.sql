@@ -230,3 +230,12 @@ create table tb_friends(
   id smallint(5) unsigned not null,
   user_name varchar(20) not null
 )engine= innodb default charset=utf8;
+
+
+# 需重构为题列表
+create table question(
+  q_id smallint unsigned primary key auto_increment,
+  q_title varchar(220) not null,
+  q_tag varchar(200),
+  q_content blob not null
+)engine=innodb default charset=utf8;
