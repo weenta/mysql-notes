@@ -232,10 +232,23 @@ create table tb_friends(
 )engine= innodb default charset=utf8;
 
 
-# segment2 question
-create table question(
-  q_id int unsigned primary key auto_increment,
-  q_title varchar(200) not null,
-  q_tag_id varchar(20) not null,
-  q_content varchar(200) not null  
+# 问题列表
+create table questions(
+  q_id smallint unsigned primary key auto_increment,
+  q_title varchar(220) not null,
+  q_tag varchar(200),
+  q_content text not null,
+  votes int not null default 0,
+  views int not null default 0,
+  answer int not null default 0,
+  last_respondent varchar(40) not null default '',
+  create_time timestamp default current_timestamp,
+  user_id int unique unsigned
 )engine=innodb default charset=utf8;
+
+
+#  标签列表
+create table tags(
+  t_id smallint not null primary key auto_increment,
+  t_name varchar(40) not null default ''
+)engine=innodb default charset=utf8

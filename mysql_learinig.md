@@ -48,10 +48,10 @@
 ` rename table users1 to users2 ` 
 
 - 删除表内容(全部)	
-` delete from table_name; `
+` delete from tb_name; `
 
 - 查看表结构	
-`desc table_name;`
+`desc tb_name;`
 
 - 更新数据表结构
 > 添加单列	` alter table user1 add pwd varchar(20) not null default '123' `
