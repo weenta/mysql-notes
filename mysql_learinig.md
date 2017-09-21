@@ -120,6 +120,8 @@
 	DELETE FROM users WHERE id = 3;	//删除id为3的记录
 
 ```
+- 删除unique key	
+` ALTER TABLE tb_name DROP INDEX col_name`
 
 - ##### 查询记录
 	- 一般查询
